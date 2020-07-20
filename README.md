@@ -15,8 +15,7 @@ The chart installs the Solr docker image from: https://hub.docker.com/_/solr/
 To install the Solr helm chart run:
 
 ```
-helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-$ helm install --name solr incubator/solr
+./deploy.sh
 ```
 
 ## Configuration Options
