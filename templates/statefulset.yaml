@@ -44,6 +44,9 @@ spec:
             secretName: {{ .Values.tls.caSecret.name }}
 {{- end }}
 {{- end }}
+        - name: nfs
+          persistentVolumeClaim:
+            claimName: nfs
         - name: solr-xml
           configMap:
             name: {{ template "solr.configmap-name" . }}
@@ -182,6 +185,8 @@ spec:
               path: /solr/admin/info/system
               port: {{ .Values.port }}
           volumeMounts:
+            - name: nfs
+              mountPath: "/mnt"
             - name: {{ template "solr.pvc-name" . }}
               mountPath: /opt/solr/server/home
 {{ if .Values.tls.enabled }}

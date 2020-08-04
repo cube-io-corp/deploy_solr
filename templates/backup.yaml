@@ -1,0 +1,28 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: backup
+spec:
+  schedule: "0 6 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: backup
+            image: "curlimages/curl:latest"
+            command:
+              - 'sh'
+              - '-c'
+              - |
+                curl "solr-svc:8983/solr/cube/replication?command=backup&name=$(date +%m-%d-%Y)&location=/mnt/"
+            volumeMounts:
+              # name must match the volume name below
+              - name: nfs
+                mountPath: "/mnt"
+          volumes:
+          - name: nfs
+            persistentVolumeClaim:
+              claimName: nfs
